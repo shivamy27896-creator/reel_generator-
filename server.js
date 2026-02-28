@@ -170,9 +170,14 @@ app.post('/generate', async (req, res) => {
 </html>
   `;
 
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const chromium = require('chrome-aws-lambda');
+
+  const browser = await chromium.puppeteer.launch({
+     args: chromium.args,
+     defaultViewport: chromium.defaultViewport,
+     executablePath: await chromium.executablePath,
+     headless: chromium.headless,
+});
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1080, height: 1920 });
